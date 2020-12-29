@@ -1,0 +1,30 @@
+#!/bin/bash
+if [ $# -lt 1 ]; 
+   then 
+   printf "Not enough arguments - %d\n" $# 
+   exit 0 
+   fi 
+
+echo "Creating Git Repository..."
+python3 ~/scripts/create-repo.py $1
+
+echo "Creating Git Files..."
+source ~/scripts/.env
+
+mkdir $1
+cd $1
+
+touch README.md
+echo "# sample" >> README.md
+touch .gitignore
+git init
+git remote add origin https://github.com/$GITHUB_USER/$1.git
+git add README.md
+git add .gitignore
+git commit -m "initial commit"
+git push -u origin master
+
+echo "Opening VS Code..."
+code .
+
+echo "Successfully created repo at https://github.com/$GITHUB_USER/$1" 
